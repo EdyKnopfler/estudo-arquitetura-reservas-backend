@@ -1,3 +1,7 @@
 # Eclipse project config
 .project
 .settings/
+.classpath
+
+# Artefatos gerados no build
+/target/
