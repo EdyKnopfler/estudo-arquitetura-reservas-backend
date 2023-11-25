@@ -34,6 +34,8 @@ public class SegurancaConfig {
 		).toArray(AntPathRequestMatcher[]::new);
 		
 		return http
+			.csrf(csrf -> csrf.disable())
+				
 			.authorizeHttpRequests(
 				autorizacao -> autorizacao
 					.requestMatchers(permitidosMatchers).permitAll()
