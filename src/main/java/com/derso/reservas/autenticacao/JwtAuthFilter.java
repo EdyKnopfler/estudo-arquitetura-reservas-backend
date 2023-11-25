@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.derso.reservas.usuarios.UsuarioService;
 
 import jakarta.servlet.FilterChain;
@@ -41,9 +42,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		if (authorization != null && authorization.startsWith("Bearer")) {
 			String token = authorization.split(" ")[1];
+			DecodedJWT parseado = jwtService.parseToken(token);
 			
-			if (jwtService.tokenValido(token)) {
-				String login = jwtService.loginUsuario(token);
+			if (jwtService.tokenValido(parseado)) {
+				String login = jwtService.loginUsuario(parseado);
 				UserDetails usuario = usuarioService.loadUserByUsername(login);
 				
 				UsernamePasswordAuthenticationToken userAuthentication =
