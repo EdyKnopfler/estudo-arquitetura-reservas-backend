@@ -21,16 +21,16 @@ public class UsuariosController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@PostMapping
+	@PostMapping("/novo")
 	@Transactional
-	public void novo(@RequestBody @Valid UsuarioDTO usuario) {
-		usuarioService.salvar(usuario);
+	public void novo(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+		usuarioService.salvar(usuarioDTO);
 	}
 	
 	@PostMapping("/autenticar")
-	public String autenticar(@RequestBody UsuarioDTO usuario) {
+	public String autenticar(@RequestBody UsuarioDTO usuarioDTO) {
 		try {
-			return usuarioService.autenticar(usuario);
+			return usuarioService.autenticar(usuarioDTO);
 		} catch (UsernameNotFoundException | SenhaInvalidaException e) {
 			throw new ResponseStatusException(
 					HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos");
