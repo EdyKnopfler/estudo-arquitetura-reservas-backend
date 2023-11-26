@@ -1,13 +1,16 @@
 package com.derso.reservas.usuarios;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.derso.reservas.autenticacao.SenhaInvalidaException;
 
@@ -28,13 +31,20 @@ public class UsuariosController {
 	}
 	
 	@PostMapping("/autenticar")
-	public String autenticar(@RequestBody UsuarioDTO usuarioDTO) {
+	public ResponseEntity<Map<String, String>> autenticar(@RequestBody UsuarioDTO usuarioDTO) {
+		Map<String, String> resposta = new HashMap<>();
+		
 		try {
-			return usuarioService.autenticar(usuarioDTO);
+			String token = usuarioService.autenticar(usuarioDTO);
+			resposta.put("status", "ok");
+			resposta.put("token", token);
+			return new ResponseEntity<>(resposta, HttpStatus.OK);
 		} catch (UsernameNotFoundException | SenhaInvalidaException e) {
-			throw new ResponseStatusException(
-					HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos");
+			resposta.put("status", "erro");
+			resposta.put("erro", "Usuário ou senha inválidos");
+			return new ResponseEntity<>(resposta, HttpStatus.UNAUTHORIZED);
 		}
+		
 	}
-
+	
 }
