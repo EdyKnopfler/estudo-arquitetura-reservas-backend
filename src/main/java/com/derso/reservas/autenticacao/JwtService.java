@@ -34,6 +34,7 @@ public class JwtService {
 				.create()
 				.withIssuer(ISSUER)
 				.withSubject(usuario.getEmail())
+				.withPayload(usuario.toJwtPayload())
 				.withExpiresAt(instantExpiracao)
 				.sign(algoritmoAssinatura());
 

@@ -1,5 +1,8 @@
 package com.derso.reservas.usuarios;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +34,14 @@ public class Usuario {
 		this.nomeCompleto = nomeCompleto;
 		this.email = email;
 		this.senhaCriptografada = senhaCriptografada;
+	}
+
+	public Map<String, String> toJwtPayload() {
+		Map<String, String> payload = new HashMap<>();
+		payload.put("id", uuid);
+		payload.put("nome", nomeCompleto);
+		payload.put("email", email);
+		return payload;
 	}
 	
 }
